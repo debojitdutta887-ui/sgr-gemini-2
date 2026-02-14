@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelly's Gym | Routine Tracker</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS (via CDN for single file portability) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gymBlack: '#0a0a0a',
+                        gymDark: '#121212',
+                        gymGray: '#1e1e1e',
+                        neonPink: '#ff0055',
+                        neonBlue: '#00f2ff',
+                        neonPurple: '#bc13fe',
+                    },
+                    fontFamily: {
+                        display: ['Oswald', 'sans-serif'],
+                        body: ['Roboto Condensed', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom CSS for things Tailwind handles awkwardly */
+        body {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 255, 0.08) 0%, transparent 20%);
+            color: #e0e0e0;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Neon Glow Text */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff0055;
+        }
+
+        /* Checkbox Animation */
+        .custom-checkbox input:checked + div {
+            background-color: #ff0055;
+            border-color: #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+        }
+        .custom-checkbox input:checked + div::after {
+            opacity: 1;
+        }
+
+        /* Day Button Active State */
+        .day-btn.active {
+            background: linear-gradient(135deg, #ff0055, #bc13fe);
+            color: white;
+            border: none;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="font-body min-h-screen flex flex-col items-center pb-12">
+
+    <!-- Navbar / Header -->
+    <nav class="w-full bg-gymBlack border-b border-gray-800 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-dumbbell text-neonPink text-2xl"></i>
+                <h1 class="font-display text-2xl tracking-wider text-white">SHELLY'S <span class="text-neonPink">GYM</span></h1>
+            </div>
+            <!-- Mobile Menu Icon (Visual only) -->
+            <div class="md:hidden text-gray-400">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-5xl px-4 mt-8">
+
+        <!-- User Profile Card (Hero Section) -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 mb-10 flex flex-col md:flex-row items-center gap-6 relative overflow-hidden group">
+            <!-- Background Decoration -->
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-neonBlue opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition duration-700"></div>
+
+            <!-- Profile Image Placeholder -->
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-neonPink p-1 shadow-lg shadow-pink-900/30">
+                <div class="w-full h-full rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+                    <i class="fa-solid fa-user text-4xl text-gray-500"></i>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="flex-1 text-center md:text-left z-10">
+                <h2 class="font-display text-3xl md:text-4xl text-white uppercase tracking-wide glow-text">Sayantika Dey</h2>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-3">
+                    <div class="px-3 py-1 bg-gray-800 rounded border border-gray-700 text-sm text-gray-300">
+                        <i class="fa-solid fa-id-card mr-2 text-neonBlue"></i>ID: 1303
+                    </div>
+                    <div class="px-3 py-1 bg-gray-800 rounded border border-gray-700 text-sm text-gray-300">
+                        <i class="fa-solid fa-trophy mr-2 text-yellow-500"></i>Member
+                    </div>
+                    <div class="px-3 py-1 bg-gray-800 rounded border border-gray-700 text-sm text-gray-300">
+                        <i class="fa-solid fa-location-dot mr-2 text-neonPink"></i>Shelly's Gym
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Timer Button -->
+            <button onclick="toggleTimer()" class="mt-4 md:mt-0 px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg flex items-center gap-3 transition-all hover:border-neonBlue">
+                <i class="fa-solid fa-stopwatch text-neonBlue text-xl"></i>
+                <div class="text-left">
+                    <span class="block text-xs text-gray-400">SESSION TIMER</span>
+                    <span id="globalTimer" class="font-mono text-xl font-bold">00:00</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Day Selector -->
+        <div class="mb-8 overflow-x-auto pb-4">
+            <div class="flex md:justify-center gap-3 min-w-max px-2" id="dayButtonsContainer">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-6">
+            <div class="flex justify-between text-sm text-gray-400 mb-2 font-display tracking-wider">
+                <span>DAILY COMPLETION</span>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-neonPink to-neonPurple h-2.5 rounded-full w-0 transition-all duration-500 ease-out shadow-[0_0_10px_#ff0055]"></div>
+            </div>
+        </div>
+
+        <!-- Workout Content Area -->
+        <div id="workoutContainer" class="grid grid-cols-1 gap-6">
+            <!-- Content injected by JS -->
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-8 text-center text-gray-600 text-sm border-t border-gray-900 w-full bg-black">
+        <p>&copy; 2024 Shelly's Gym Application</p>
+        <p class="text-xs mt-1">Train Hard. Stay Consistent.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA OBJECT ---
+        const workoutData = {
+            MONDAY: {
+                subtitle: "Chest & Triceps Focus",
+                cardio: "30 Minutes Cardio",
+                groups: [
+                    {
+                        name: "CHEST",
+                        exercises: [
+                            { name: "Seated Press", reps: "15 x 3" },
+                            { name: "Incline Machine Press", reps: "14, 12, 10" },
+                            { name: "Incline Close Dumbbell Press", reps: "14, 12, 10" },
+                            { name: "Pec Dec Fly", reps: "15 x 3" }
+                        ]
+                    },
+                    {
+                        name: "TRICEPS",
+                        exercises: [
+                            { name: "Bench Dips", reps: "10 x 3" },
+                            { name: "Cable Push Down", reps: "12, 10, 8" },
+                            { name: "Reverse Push Down", reps: "12, 10, 8" },
+                            { name: "Dumbbell Kickback", reps: "10 x 3" }
+                        ]
+                    }
+                ]
+            },
+            TUESDAY: {
+                subtitle: "Back & Biceps Power",
+                cardio: "30 Minutes Cardio",
+                groups: [
+                    {
+                        name: "BACK",
+                        exercises: [
+                            { name: "Lat Pull Down", reps: "15 x 3" },
+                            { name: "Reverse Pull Down", reps: "14, 12, 10" },
+                            { name: "Seated Row", reps: "14, 12, 10" }
+                        ]
+                    },
+                    {
+                        name: "BICEPS",
+                        exercises: [
+                            { name: "Cable Curl", reps: "10 x 3" },
+                            { name: "Hammer Curl (Rope)", reps: "12, 10, 8" },
+                            { name: "Wrist Curl", reps: "15 x 3" },
+                            { name: "Plank", reps: "3 Minutes" }
+                        ]
+                    }
+                ]
+            },
+            WEDNESDAY: {
+                subtitle: "Cardio & Core Burn",
+                cardio: "Full Intensity Session",
+                groups: [
+                    {
+                        name: "CARDIO + LOWER ABS",
+                        exercises: [
+                            { name: "Jumping Jacks", reps: "50 x 3" },
+                            { name: "High Knees", reps: "50 x 3" },
+                            { name: "Mountain Climber", reps: "30+30 x 3" },
+                            { name: "Inchworm", reps: "15 x 3" },
+                            { name: "Leg Raises", reps: "20 x 3" },
+                            { name: "Reverse Crunches", reps: "20 x 3" },
+                            { name: "Plank", reps: "3 Minutes" }
+                        ]
+                    }
+                ]
+            },
+            THURSDAY: {
+                subtitle: "Shoulders & Forearms",
+                cardio: "20 Minutes Cardio",
+                groups: [
+                    {
+                        name: "SHOULDER",
+                        exercises: [
+                            { name: "Shoulder Machine Press", reps: "16, 14, 12" },
+                            { name: "Front Dumbbell Raises", reps: "16, 14, 12" },
+                            { name: "Side Lateral Raise", reps: "16, 14, 12" },
+                            { name: "Dumbbell Shrugs", reps: "10 x 3" }
+                        ]
+                    },
+                    {
+                        name: "WRIST",
+                        exercises: [
+                            { name: "Wrist Curl with Dumbbell", reps: "15 x 3" },
+                            { name: "Reverse Curl", reps: "15 x 3" },
+                            { name: "Natai", reps: "3 x 3" }
+                        ]
+                    }
+                ]
+            },
+            FRIDAY: {
+                subtitle: "Chest & Upper Core",
+                cardio: "20 Minutes Cardio",
+                groups: [
+                    {
+                        name: "CHEST",
+                        exercises: [
+                            { name: "Push Up", reps: "10 x 3" },
+                            { name: "Dumbbell Press", reps: "12, 10, 10" },
+                            { name: "Incline Close Dumbbell Press", reps: "14, 12, 10" },
+                            { name: "Pec Dec Fly", reps: "15 x 3" }
+                        ]
+                    },
+                    {
+                        name: "UPPER ABS",
+                        exercises: [
+                            { name: "Sit Ups", reps: "30 x 3" },
+                            { name: "Half Sit Ups", reps: "30 x 3" },
+                            { name: "Plank", reps: "2 Minutes x 2" },
+                            { name: "Twister", reps: "1 Minute" }
+                        ]
+                    }
+                ]
+            },
+            SATURDAY: {
+                subtitle: "Leg Day Destruction",
+                cardio: "Warmup Recommended",
+                groups: [
+                    {
+                        name: "LEG",
+                        exercises: [
+                            { name: "Squat", reps: "20 x 3" },
+                            { name: "Leg Extension", reps: "15 x 3" },
+                            { name: "Leg Press", reps: "15 x 3" },
+                            { name: "Sumo Squat", reps: "10 x 3" },
+                            { name: "Lunges", reps: "10-10 x 3" },
+                            { name: "Calf Raises", reps: "20 x 3" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // --- APP STATE ---
+        let currentDay = "MONDAY";
+        let timerInterval;
+        let seconds = 0;
+        let isTimerRunning = false;
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDayButtons();
+            
+            // Set current day automatically
+            const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+            if(workoutData[today]) {
+                currentDay = today;
+            }
+            
+            loadDay(currentDay);
+        });
+
+        // --- RENDER FUNCTIONS ---
+        
+        function renderDayButtons() {
+            const container = document.getElementById('dayButtonsContainer');
+            container.innerHTML = '';
+            
+            Object.keys(workoutData).forEach(day => {
+                const btn = document.createElement('button');
+                btn.className = `day-btn px-6 py-2 rounded-full font-display uppercase tracking-wider text-sm border border-gray-700 bg-gray-800 text-gray-400 transition-all duration-300 hover:text-white ${day === currentDay ? 'active' : ''}`;
+                btn.innerText = day.substring(0, 3); // MON, TUE etc
+                btn.onclick = () => {
+                    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentDay = day;
+                    loadDay(day);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function loadDay(day) {
+            const data = workoutData[day];
+            const container = document.getElementById('workoutContainer');
+            
+            // Fade out effect could go here, but keeping it snappy for now
+            container.innerHTML = `
+                <!-- Cardio Header -->
+                <div class="glass-card rounded-xl p-5 border-l-4 border-neonBlue flex justify-between items-center mb-2">
+                    <div>
+                        <h3 class="text-neonBlue font-display text-xl tracking-wide">CARDIO</h3>
+                        <p class="text-gray-300 text-sm">${data.cardio}</p>
+                    </div>
+                    <i class="fa-solid fa-person-running text-3xl text-gray-600"></i>
+                </div>
+            `;
+
+            let totalExercises = 0;
+
+            // Render Groups
+            data.groups.forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = "glass-card rounded-xl p-6 relative overflow-hidden";
+                
+                let exercisesHtml = '';
+                group.exercises.forEach((ex, index) => {
+                    const uniqueId = `${day}-${group.name}-${index}`;
+                    totalExercises++;
+                    exercisesHtml += `
+                        <div class="flex items-center justify-between py-4 border-b border-gray-800 last:border-0 hover:bg-white/5 transition px-2 rounded-lg">
+                            <div class="flex items-center gap-4">
+                                <label class="custom-checkbox cursor-pointer relative w-6 h-6">
+                                    <input type="checkbox" class="sr-only" onchange="updateProgress()" id="${uniqueId}">
+                                    <div class="w-6 h-6 border-2 border-gray-600 rounded bg-transparent transition-all flex items-center justify-center">
+                                        <i class="fa-solid fa-check text-white text-xs opacity-0 transition-opacity transform scale-0 input-checked:scale-100"></i>
+                                    </div>
+                                    <div class="absolute inset-0 bg-transparent rounded pointer-events-none after:content-[''] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:text-white after:opacity-0 transition-opacity">
+                                        <i class="fa-solid fa-check text-xs"></i>
+                                    </div>
+                                </label>
+                                <div>
+                                    <h4 class="text-gray-200 font-bold text-lg leading-tight">${ex.name}</h4>
+                                    <p class="text-neonPink text-sm font-mono mt-1">${ex.reps} <span class="text-gray-500 text-xs ml-1">SETS</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                groupDiv.innerHTML = `
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i class="fa-solid fa-dumbbell text-6xl text-white"></i>
+                    </div>
+                    <h3 class="font-display text-2xl text-white border-b border-neonPink pb-2 mb-4 inline-block pr-10">${group.name}</h3>
+                    <div class="space-y-1 relative z-10">
+                        ${exercisesHtml}
+                    </div>
+                `;
+                container.appendChild(groupDiv);
+            });
+
+            // Store total exercises for progress calculation
+            container.dataset.total = totalExercises;
+            updateProgress();
+        }
+
+        // --- UTILITIES ---
+
+        function updateProgress() {
+            const container = document.getElementById('workoutContainer');
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            const percentage = total === 0 ? 0 : Math.round((checked / total) * 100);
+            
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+            document.getElementById('progressText').innerText = `${percentage}%`;
+            
+            if (percentage === 100) {
+                document.getElementById('progressBar').classList.add('shadow-[0_0_20px_#00f2ff]');
+                document.getElementById('progressBar').classList.replace('from-neonPink', 'from-neonBlue');
+                document.getElementById('progressBar').classList.replace('to-neonPurple', 'to-green-400');
+            } else {
+                document.getElementById('progressBar').classList.remove('shadow-[0_0_20px_#00f2ff]');
+                document.getElementById('progressBar').classList.replace('from-neonBlue', 'from-neonPink');
+                document.getElementById('progressBar').classList.replace('to-green-400', 'to-neonPurple');
+            }
+        }
+
+        function toggleTimer() {
+            const display = document.getElementById('globalTimer');
+            const btnIcon = document.querySelector('button[onclick="toggleTimer()"] i');
+            
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btnIcon.classList.replace('fa-pause', 'fa-stopwatch');
+                btnIcon.classList.remove('animate-pulse');
+            } else {
+                isTimerRunning = true;
+                btnIcon.classList.replace('fa-stopwatch', 'fa-pause');
+                btnIcon.classList.add('animate-pulse');
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    const secs = (seconds % 60).toString().padStart(2, '0');
+                    display.innerText = `${mins}:${secs}`;
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
